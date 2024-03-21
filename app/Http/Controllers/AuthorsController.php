@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\AuthorService;
+use Illuminate\Http\Request; 
 
 class AuthorsController extends Controller
 {
@@ -11,7 +12,8 @@ class AuthorsController extends Controller
         $this->service = $service;
     }
 
-    public function index($page = 1) {
+    public function index(Request $request) {
+        $page = $request->query('page', 1);
         $result = $this->service->list($page, 10);
         return view('authors.list', ["data" => $result]);
     }
