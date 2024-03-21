@@ -13,6 +13,6 @@ This exam application is built using Laravel framework, with Sail plugin for doc
 - Clone repository: ``` git clone ```
 - Change to project directory ``` cd q-books-app ```.
 - Run application setup mini script ``` ./app-setup ```.
-- Application now shloud be available trough exposed port 80 ``` http://localhost/ ```.
+- After script is done application now shloud be available trough exposed port 80 ``` http://localhost/ ```.
 - If your local docker setup does not have ``` sail-8.3/app ``` image builded, then process of first time building can take up to 20 mins
 
