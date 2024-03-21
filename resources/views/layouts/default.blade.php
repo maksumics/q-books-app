@@ -12,10 +12,15 @@
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
+                @checkAuth
                 <li><a href="{{ route('authors-list') }}">Authors</a></li>
                 <li><a href="{{ route('book-create') }}">New book</a></li>
                 <li style="float:right;"><a href="{{ route('logout') }}">Log out</a></li>
                 <li style="float:right;">Welcome, {{ session('username') }}</li>
+                @else
+                <li style="float:right;"><a href="{{ route('login') }}">Log in</a></li>
+                @endcheckAuth
+
             </ul>
         </nav>
     </header>

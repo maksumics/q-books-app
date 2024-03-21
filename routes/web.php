@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'check'])->name('login');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware(CheckAuth::class)->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('authors/list/{page?}', [AuthorsController::class, 'index'])->name('authors-list');
     Route::get('authors/{id}', [AuthorsController::class, 'get'])->name('author-detail');
