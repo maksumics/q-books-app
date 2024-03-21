@@ -22,15 +22,10 @@ class BookController extends Controller
     }
 
     public function store(StoreBookRequest $request) {
-        $book = new Book(null, 
-            $request->input('title'),
-            $request->input('releaseDate'),
-            $request->input('description'),
-            $request->input('isbn'),
-            $request->input('format'),
-            $request->input('pageNumbers'),
-            $this->authorService->get($request->input('author'))
-        );
+        //$request->validate();
+        $request = $request->validated();
+        $request['author'] = $this->authorService->get($request['author']);
+        $book = new Book($request);
 
         if ($this->bookService->create($book)) {
             return redirect()->route('author-detail', ['id' => $book->author->id]);

@@ -18,6 +18,10 @@ class AuthorService
         $this->authorRepo->setKey($key);
     }
 
+    public function setBaseUri($key) {
+        $this->authorRepo->setBaseUri($key);
+    }
+
     public function list($page, $limit = 10) {
         if (empty($limit)) {
             $this->authorRepo->setExcludeLimitCheck(true);

@@ -3,7 +3,7 @@
 namespace App\Entities;
 
 
-class Book
+class Book extends Entity
 {
     public $id;
     public $title;
@@ -14,15 +14,25 @@ class Book
     public $pageNumbers;
     public Author $author;
 
-    public function __construct($id, $title, $releaseDate, $description, $isbn, $format, $pageNumbers, $author = null)
-    {
-        $this->id = $id;
-        $this->title = $title;
-        $this->releaseDate = date('d-m-Y', strtotime($releaseDate));
-        $this->description = $description;
-        $this->isbn = $isbn;
-        $this->format = $format;
-        $this->pageNumbers = $pageNumbers;
-        $this->author = $author;
+    protected $fieldMap = [
+        'id' => 'id',
+        'title' => 'title',
+        'release_date' => 'releaseDate',
+        'description' => 'description',
+        'isbn' => 'isbn',
+        'format' => 'format',
+        'number_of_pages' => 'pageNumbers'
+    ];
+
+    protected function preProcessField($name, &$value) {
+        switch($name) {
+            case 'releaseDate':
+                return date('d-m-Y', strtotime($value));
+                break;
+            default:
+                return $value;
+                break;
+        }
+        
     }
 }

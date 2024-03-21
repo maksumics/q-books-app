@@ -25,6 +25,7 @@ class StoreBookRequest extends FormRequest
             'title' => 'required',
             'releaseDate' => 'required',
             'description' => 'required',
+            'isbn' => 'required',
             'format' => 'required',
             'pageNumbers' => 'required',
             'author' => 'required'

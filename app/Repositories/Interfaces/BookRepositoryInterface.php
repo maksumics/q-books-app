@@ -6,7 +6,7 @@ use App\Entities\Book;
 
 interface BookRepositoryInterface
 {
-    public function list($page);
+    public function list($page, $limit);
 
     public function get($id);
 

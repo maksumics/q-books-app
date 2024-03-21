@@ -2,26 +2,45 @@
 
 namespace App\Entities;
 
-class Author
+class Author extends Entity
 {
+
+    protected $fieldMap = [
+        'id' => 'id',
+        'first_name' => 'firstName',
+        'last_name' => 'lastName',
+        'birthday' => 'birthday',
+        'biography' => 'biography',
+        'gender' => 'gender',
+        'place_of_birth' => 'placeOfBirth',
+        'books' => 'books'
+    ];
+
     public $id;
     public $firstName;
     public $lastName;
     public $birthday;
     public $gender;
     public $placeOfBirth;
-    public $books;
+    public $books = [];
 
-    public function __construct($id, $firstName, $lastName, $birthday, $gender, $placeOfBirth, $books = [])
-    {
-        $this->id = $id;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->birthday = date('d-m-Y', strtotime($birthday));
-        $this->gender = $gender;
-        $this->placeOfBirth = $placeOfBirth;
-        $this->books = collect($books)->map(function ($book) {
-            return new Book($book['id'], $book['title'], $book['release_date'], $book['description'], $book['isbn'], $book['format'], $book['number_of_pages'], $this);
-        });
+    protected function preProcessField($name, &$value) {
+        switch($name) {
+            case 'books':
+                $books = [];
+                foreach ($value as $item) {
+                    $books[] = new Book($item, mapping: true);
+                }
+
+                return $books;
+                break;
+            case 'birthday':
+                return date('d-m-Y', strtotime($value));
+                break;
+            default:
+                return $value;
+                break;
+        }
+        
     }
 }

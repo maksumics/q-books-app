@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 
 class CreateAuthor extends Command
 {
+    const BASE_URI = 'https://symfony-skeleton.q-tests.com/api/v2';
     /**
      * The name and signature of the console command.
      *
@@ -51,7 +52,7 @@ class CreateAuthor extends Command
                 'password' => $password
             ];
 
-            $response = Http::post('https://symfony-skeleton.q-tests.com/api/v2/token', $data);
+            $response = Http::post(self::BASE_URI . '/token', $data);
 
             if ($response->successful()) {
                 $token = $response['token_key'];
@@ -62,6 +63,7 @@ class CreateAuthor extends Command
         }
 
         $this->service->setKey($token);
+        $this->service->setBaseUri(self::BASE_URI . '/authors');
 
         $birthday = date_create_from_format('d-m-Y', $this->option('birthday'));
         $birthday = $birthday ? $birthday->format('d-m-Y') : null;
@@ -78,7 +80,12 @@ class CreateAuthor extends Command
             return;
         }
 
-        $author = new Author(null, $firstName, $lastName, $birthday, $gender, $birthPlace);
+        $author = new Author();
+        $author->firstName = $firstName;
+        $author->lastName = $lastName;
+        $author->gender = $gender;
+        $author->birthday = $birthday;
+        $author->placeOfBirth = $birthPlace;
         $author = $this->service->create($author);
         if ($author) {
             $this->info(sprintf("Author %s %s successfuly created with an id %d. Clossing command!", $author['first_name'], $author['last_name'], $author['id']));

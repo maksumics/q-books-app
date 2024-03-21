@@ -16,7 +16,11 @@ class AuthService
 
         $response = Http::post('https://symfony-skeleton.q-tests.com/api/v2/token', $data);
         if($response->successful()) {
-            session(['token_key' => $response['token_key'], 'username' => $response['user']['first_name'] . ' ' . $response['user']['last_name']]);
+            session([
+                'token_key' => $response['token_key'], 
+                'username' => $response['user']['first_name'] . ' ' . $response['user']['last_name'],
+                'expiration_time' => now()->addMinutes(90)
+            ]);
             return $response['token_key'];
         } else {
             return false;
