@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Entities\Author;
 use App\Entities\Book;
+use App\Http\Requests\StoreBookRequest;
 use App\Services\AuthorService;
 use App\Services\BookService;
-use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
@@ -17,19 +17,19 @@ class BookController extends Controller
         $this->bookService = $bookService;
     }
     public function create() {
-        $authors = $this->authorService->list(page: 1, limit: null);
-        return view('book.create', ['authors' => $authors]);
+        $result = $this->authorService->list(page: 1, limit: null);
+        return view('book.create', ['authors' => $result['authors']]);
     }
 
-    public function store(Request $request) {
+    public function store(StoreBookRequest $request) {
         $book = new Book(null, 
-            $request['title'],
-            $request['releaseDate'],
-            $request['description'],
-            $request['isbn'],
-            $request['format'],
-            $request['pageNumbers'],
-            $this->authorService->get($request['author'])
+            $request->input('title'),
+            $request->input('releaseDate'),
+            $request->input('description'),
+            $request->input('isbn'),
+            $request->input('format'),
+            $request->input('pageNumbers'),
+            $this->authorService->get($request->input('author'))
         );
 
         if ($this->bookService->create($book)) {

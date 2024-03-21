@@ -20,10 +20,6 @@ class BookService
         return $this->bookRepo->list($page, $limit);
     }
 
-    public function getAuthors() {
-        return $this->authorService->list(page: 1, limit: null);
-    }
-
     public function get($id) {
         return $this->bookRepo->get($id);
     }

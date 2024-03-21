@@ -12,8 +12,8 @@ class AuthorsController extends Controller
     }
 
     public function index($page = 1) {
-        $authors = $this->service->list($page, 10);
-        return view('authors.list', ["authors" => $authors]);
+        $result = $this->service->list($page, 10);
+        return view('authors.list', ["data" => $result]);
     }
 
     public function get($id) {

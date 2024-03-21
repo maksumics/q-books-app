@@ -1,9 +1,10 @@
 @extends('layouts.default')
 @section('title')
-List
+    Lists of authors
 @endsection
 @section('content')
 <div class="container">
+    @if(count($data['authors']))
     <table>
         <thead>
             <tr>
@@ -17,7 +18,7 @@ List
             </tr>
         </thead>
         <tbody>
-            @foreach($authors as $author)
+            @foreach($data['authors'] as $author)
             <tr>
                 <td> {{ $author->firstName }}</td>
                 <td> {{ $author->lastName }}</td>
@@ -29,6 +30,26 @@ List
             </tr>
             @endforeach
         </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <p>Showing {{ count($data['authors']) }} of {{ $data['totalCount'] }}</p>
+                </td>
+                <td>
+                    @if ($data['currentPage'] > 1) 
+                            <a href="{{ route('authors-list', ['page' => ((int) $data['currentPage'])-1]) }}">Previous</a> 
+                    @endif  
+                    {{ $data['currentPage'] }} - ... - {{ $data['totalPages'] }} 
+                    @if ($data['currentPage'] < $data['totalPages'])
+                        <a href="{{ route('authors-list', ['page' => ((int) $data['currentPage'])+1]) }}">Next</a> 
+                    @endif
+                </td>
+            </tr>
+            
+        </tfoot>
     </table>
+    @else
+        <p>No authors to show.</p>
+    @endif
 </div>
-@stop
+@endsection

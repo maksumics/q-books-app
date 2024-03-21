@@ -5,20 +5,6 @@ namespace App\Entities;
 
 class Book
 {
-    protected $fieldMap = [
-        'id' => 'id',
-        'title' => 'title',
-        'releaseDate' => 'release_date',
-        'description' => 'description',
-        'isbn' => 'isbn',
-        'format' => 'format',
-        'pageNumbers' => 'number_of_pages'
-    ];
-
-    public function getFieldMap() {
-        return $this->fieldMap;
-    }
-
     public $id;
     public $title;
     public $releaseDate;

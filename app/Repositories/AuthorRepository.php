@@ -25,10 +25,12 @@ class AuthorRepository implements AuthorRepositoryInterface
         $this->excludeLimitCheck = (bool) $value;
     }
 
-    public function list($page, $limit = 10) {
+    public function list($page, $limit = 10, $order = 'id', $direction = 'ASC') {
         $data = [
-            'limit' => $limit ? $limit : 10,
-            'page' => $page
+            'limit'     => $limit ? $limit : 10,
+            'order'     => $order ? $order : 'id',
+            'direction' => $direction ? $direction : 'ASC',
+            'page'      => $page
         ];
         $response = Http::withToken($this->apiTokenKey)->get($this->apiUriBase, $data);
         if ($response->successful()) {
@@ -39,7 +41,13 @@ class AuthorRepository implements AuthorRepositoryInterface
                 ];
                 $response = Http::withToken($this->apiTokenKey)->get($this->apiUriBase, $data);
             }
-            return $this->authorMap($response['items'], true);
+
+            return [
+                'authors'    => $this->authorMap($response['items'], true), 
+                'totalCount' => $response['total_results'],
+                'totalPages' => $response['total_pages'],
+                'currentPage'=> $response['current_page']
+            ];
         } else {
             return [];
         }

@@ -22,7 +22,7 @@ class AuthorService
         if (empty($limit)) {
             $this->authorRepo->setExcludeLimitCheck(true);
         }
-        return $this->authorRepo->list($page, $limit);
+        return $this->authorRepo->list($page, $limit, 'id', 'DESC');
     }
 
     protected function hasBooks($id) {

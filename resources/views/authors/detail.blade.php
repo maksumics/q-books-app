@@ -1,9 +1,27 @@
 @extends('layouts.default')
 @section('title')
-List
+    {{ $author->firstName }} {{ $author->lastName }}
 @endsection
 @section('content')
-<h3>{{ $author->firstName }} {{ $author->lastName }}</h3>
+
+<div class="info-container">
+    <h2>{{ $author->firstName }} {{ $author->lastName }}</h2>
+    <div class="box-info">
+        <div class="box-info-item">
+            <span class="label">Born on:</span>
+            <span class="value">{{ $author->birthday }}</span>
+        </div>
+        <div class="box-info-item">
+            <span class="label">Gender:</span>
+            <span class="value">{{ $author->gender }}</span>
+        </div>
+        <div class="box-info-item">
+            <span class="label">Born place:</span>
+            <span class="value">{{ $author->placeOfBirth }}</span>
+        </div>
+    </div>
+</div>
+<h3>{{ $author->firstName }}'s books</h3>
 
 @if (count($author->books))
 <table>
