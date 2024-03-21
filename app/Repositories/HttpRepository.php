@@ -9,6 +9,7 @@ abstract class HttpRepository
 {
     protected $apiUriBase;
     protected $apiTokenKey;
+    protected $excludeLimitCheck;
 
     abstract protected function getEntity();
 
@@ -16,6 +17,11 @@ abstract class HttpRepository
     {
         $this->apiUriBase = env('APP_API_URI_BASE');
         $this->apiTokenKey = session('token_key');
+        $this->excludeLimitCheck = false;
+    }
+
+    public function setExcludeLimitCheck($value) {
+        $this->excludeLimitCheck = (bool) $value;
     }
 
     public function setBaseUri($uri) {
@@ -35,6 +41,12 @@ abstract class HttpRepository
         ];
         try {
             $response = Http::withToken($this->apiTokenKey)->get($this->apiUriBase, $data);
+            if ($this->excludeLimitCheck)  {
+                $data = [
+                    'limit' => $response['total_results']
+                ];
+                $response = Http::withToken($this->apiTokenKey)->get($this->apiUriBase, $data);
+            }
         } catch (Exception $e) {
             return false;
         }
